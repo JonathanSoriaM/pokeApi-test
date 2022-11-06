@@ -26,7 +26,7 @@ export const useUserStore = defineStore('userStore',{
                   } catch (error) {
                         console.log(error)
                         const errorMessage = error.message;
-
+                        return errorMessage;
                   }
             },
 
@@ -38,7 +38,7 @@ export const useUserStore = defineStore('userStore',{
                   } catch (error) {
                         console.log(error)
                         const errorMessage = error.message;
-
+                        return errorMessage;
                   }
             }
       }

@@ -28,26 +28,67 @@
 </template>
 
 <script setup>
-import { async } from '@firebase/util';
-import { ref } from 'vue';
+
+
+
+
+
 import { useUserStore} from '../store/user'
 import { useRouter} from 'vue-router'
+import { useVuelidate } from '@vuelidate/core'
+import { required , sameAs } from '@vuelidate/validators'
+import { reactive } from 'vue';
 
 const userStore = useUserStore();
 const router = useRouter();
 
-const email = ref('');
-const password = ref('');
-const passwordConfirm = ref('');
+const data = reactive({
+      email:'',
+      password:'',
+      passwordConfirm:''
+  });
 
 
- // TODO: FALTA VALIDAR LOS CAMPOS
- // REDIRECCIONAR AL CLIENTE SI YA ESTA REGISTRADO
+  const rules = {
+      email:{required},
+      password :{required},
+      passwordConfirm: { 
+                required, 
+                sameAs: sameAs(data.password)
+            }
+  }
 
-const handleSubmit = async () => {
-  await  userStore.registrarUsuario(email.value, password.value)
-  router.push('/')
-}
+  const v$ =  useVuelidate(rules,data);
+
+
+
+  const handleSubmit = async () => {
+      const result = await v$.value.$validate();
+      if( result){
+           
+        const createUser =    await  userStore.registrarUsuario(email.value, password.value)
+          
+        //TODO:   VALIDAR SI EL USUARIO YA EXISTE O SE REGISTRO CORRECTAMENTE
+        // mostrar error si el la constraseñas no coninciden
+       if(loginUser === 'Firebase: Error (auth/user-not-found).'){
+            alert('UPS!! REVISA TUS CREDENCIALES')
+           
+       }else{
+        
+            router.push('/')
+       }
+ 
+             
+      }else{
+            alert('DEBES LLENAR TODOS LOS CAMPOS')
+      }
+ }
+
+
+
+
+
+
 
 
 </script>

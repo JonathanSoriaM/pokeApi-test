@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 //import './style.css'
 import App from './App.vue'
 import router from './Routes/route'
-import { createPinia} from 'pinia'
+import { createPinia } from 'pinia'
 
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
