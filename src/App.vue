@@ -2,8 +2,9 @@
 
 <template>
 
-<h1>APP base</h1>
 
+
+<router-view></router-view>
 
 </template>
 
