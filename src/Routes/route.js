@@ -4,6 +4,7 @@ import { useUserStore } from '../store/user';
 import Home from '../views/home.vue'
 import Login from '../views/login.vue'
 import Registro from '../views/registro.vue'
+import Pokemon from '../views/pokeView.vue'
 
 const requireAuth = async (to,from , next) => {
       const userStore = useUserStore();
@@ -23,11 +24,15 @@ const requireAuth = async (to,from , next) => {
 const routes = [
 
       {path: '/',component: Home,beforeEnter: requireAuth
-            // ...
+          
       },
       {path: '/login',component: Login},
       {path: '/registro',component: Registro},
-
+      {path: '/:name',
+      name:'pokemon',
+      component:Pokemon ,beforeEnter: requireAuth
+          
+},
 ]
 
 const router = createRouter({
