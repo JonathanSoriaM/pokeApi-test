@@ -15,32 +15,70 @@
               <v-app-bar-nav-icon></v-app-bar-nav-icon>
             </template>
     
-            <v-app-bar-title>Title</v-app-bar-title>
+            <v-app-bar-title>Bienvenido</v-app-bar-title>
+            <v-app-bar-title>Home</v-app-bar-title>
+
     
             <v-spacer></v-spacer>
-    
+           
+
+
+
+            <v-spacer></v-spacer>
+            
             <v-btn icon>
               <v-icon>mdi-magnify</v-icon>
             </v-btn>
     
-            <v-btn icon>
-              <v-icon>mdi-heart</v-icon>
-            </v-btn>
+            <v-app-bar-title> 
+              <a href="">Habilidades</a>
+
+              </v-app-bar-title>
     
-            <v-btn icon>
-              <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
+            <v-app-bar-title>
+              <button
+              @click="userStore.logOutUser">
+                Salir
+              </button>
+            </v-app-bar-title>
           </v-app-bar>
-    
-          
+        
         </v-layout>
+
+        
       </v-card>
+      <v-btn 
+              @click="pokemonAll"
+              variant="flat">
+      Normal
+    </v-btn>
     </template>
 
 <script setup>
 
 import { useUserStore } from '../store/user' 
+import { PokemonService} from '../store/pokemonService'
+import {  computed } from "vue";
 
 const userStore = useUserStore();
 
+
+function pokemonAll (){
+  
+  const getPokemons = async() =>{
+  const pokemons = await PokemonService.getAllPokemon();
+
+  console.log(pokemons)
+}
+
+getPokemons()
+}
+
+
+
 </script>
+
+
+<style>
+
+</style>
