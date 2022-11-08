@@ -1,41 +1,45 @@
 <template>
 
 <v-toolbar
-    color="purple"
+    color="#324d9a"
     dark
   >
-    <v-toolbar-title>Title</v-toolbar-title>
+    <v-toolbar-title
+   
+    >Bienvenido/Home</v-toolbar-title>
 
-    <v-divider
-      class="mx-1"
-      vertical
-    ></v-divider>
+ 
 
-    <span class="subheading">My Home</span>
+    <span class="subheading">
+      <img class="img"
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/2560px-International_Pok%C3%A9mon_logo.svg.png" alt="">
+    </span>
 
     <v-spacer></v-spacer>
 
     <v-toolbar-items class="hidden-sm-and-down">
-      <v-btn variant="text">
-        News
+     
+
+      <v-divider vertical></v-divider>
+
+      <v-btn
+      @click="home"
+       variant="text">
+     Habilidades
       </v-btn>
 
       <v-divider vertical></v-divider>
 
-      <v-btn variant="text">
-        Blog
+      <v-btn 
+      @click="userStore.logOutUser" v-if="userStore.userData"
+      variant="text">
+        Salir
       </v-btn>
-
-      <v-divider vertical></v-divider>
-
-      <v-btn variant="text">
-        Music
-      </v-btn>
-
+     
       <v-divider vertical></v-divider>
     </v-toolbar-items>
 
-    <v-app-bar-nav-icon></v-app-bar-nav-icon>
+   
   </v-toolbar>
 
 
@@ -46,7 +50,15 @@
     >
       <v-col :cols="cols[0]">
         <v-sheet class="pa-2 ma-2">
-         
+          <div class="banner">
+			<h3>Favoritos</h3>
+			<ul v-for="fav in favoritos">
+				<li>
+          {{fav}}
+        </li>
+			</ul>
+
+		</div>
         </v-sheet>
       </v-col>
 
@@ -59,16 +71,22 @@
 <div 
 
 v-for="pokemon in pokemonsArray"
-class="card" style="background-image: url('./img/1.jpg')">
+:key="pokemon.name"
+class="card"
+>
   <div class="textos">
     <h3>{{pokemon.name}}</h3>
+
+
     <p>
       <RouterLink
   :to="`/${pokemon.name}`"
   >   Info</RouterLink>
 
     </p>
-    
+    <button 
+    class="btnFav"
+    @click="addFavoritos(pokemon.name)" >+ </button>
   </div>
 </div>
 </div>
@@ -79,15 +97,7 @@ class="card" style="background-image: url('./img/1.jpg')">
   </v-container>
 
  
-  <ul>
-
-<li v-for="pokemon in pokemonsArray">
-  <RouterLink
-  :to="`/${pokemon.name}`"
-  >   {{pokemon.name}}</RouterLink>
-
-</li>
-</ul>
+  
 
 
 
@@ -98,17 +108,17 @@ class="card" style="background-image: url('./img/1.jpg')">
 import { computed } from 'vue'
 import { useUserStore } from '../store/user' 
 import { PokemonService} from '../store/pokemonService'
+import { useRouter} from 'vue-router'
 import{ ref} from 'vue'
 import { RouterLink } from 'vue-router'
 import 'vuetify/styles'
 
 import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
 
+const userStore = useUserStore()
 const pokemonsArray = ref([]);
-
-  
+const favoritos = ref([])
+const router = useRouter();
   const getPokemons = async() =>{
 
     try {
@@ -137,16 +147,34 @@ const vuetify = createVuetify({
       return lg ? [3, 9] : sm ? [9, 3] : [6, 6]
 })
 
+function addFavoritos(pokemon){
+ 
+  favoritos.value.push(pokemon)
+
+  console.log(favoritos.value)
+}
+
+
+function home (){
+  router.push('/')
+}
+
 </script>
 
-
 <style>
+.img {
+  width: 200px;
+  height: 50px;
+}
 
-
-
-
+.btnFav{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: blue;
+  color: white;
+}
 .contenedor-conciertos {
-
 
 	/* Grid */
 	display: grid;
@@ -155,7 +183,7 @@ const vuetify = createVuetify({
 }
 
 .card {
-  border-color:  black;
+  background: peachpuff;
 	border-radius: 10px;
 	min-height: 200px;
 	font-weight: bold;
@@ -176,8 +204,24 @@ const vuetify = createVuetify({
 	flex-direction: column;
 	justify-content: space-between;
 
-	/* Grid */
-	/* display: grid;
-	grid-template-rows: 1fr auto; */
+
+}
+.banner{
+ 
+  border-radius: 5%;
+  background-color: blue ;
+  opacity: 80%;
+  padding: 20px 20px;
+
+}
+
+.banner ul {
+	list-style: none;
+
+}
+
+.banner ul li {
+	margin: 15px;
+	font-weight: bold;
 }
 </style>
